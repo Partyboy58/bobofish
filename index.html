@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>博博鱼的网站</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      transition: background-color 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .light {
+      background-color: #ffffff;
+      color: #000000;
+    }
+
+    .dark {
+      background-color: #121212;
+      color: #ffffff;
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      padding: 16px;
+    }
+
+    select {
+      padding: 6px 12px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: inherit;
+      color: inherit;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin: 0 0 16px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    footer {
+      text-align: center;
+      padding: 16px;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body class="light">
+  <header>
+    <select id="themeSelector">
+      <option value="light">浅色</option>
+      <option value="dark">深色</option>
+    </select>
+  </header>
+
+  <main>
+    <h1>博博鱼的网站</h1>
+    <p>此网站正在维护</p>
+  </main>
+
+  <footer>
+    2025©️硬核装机小分队
+  </footer>
+
+  <script>
+    const body = document.body;
+    const selector = document.getElementById('themeSelector');
+
+    // 初始化主题（可选：从 localStorage 读取上次设置）
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    body.className = savedTheme;
+    selector.value = savedTheme;
+
+    selector.addEventListener('change', () => {
+      const theme = selector.value;
+      body.className = theme;
+      localStorage.setItem('theme', theme); // 保存用户选择
+    });
+  </script>
+</body>
+</html>
