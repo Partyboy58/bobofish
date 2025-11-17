@@ -2,82 +2,116 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>博博鱼的网站</title>
   <style>
     body {
       margin: 0;
       padding: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      transition: background-color 0.3s, color 0.3s;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    .light {
       background-color: #ffffff;
       color: #000000;
+      transition: background-color 0.3s, color 0.3s;
     }
 
-    .dark {
+    body.dark {
       background-color: #121212;
       color: #ffffff;
     }
 
     header {
       display: flex;
-      justify-content: flex-end;
-      padding: 16px;
-    }
-
-    select {
-      padding: 6px 12px;
-      font-size: 14px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background: inherit;
-      color: inherit;
-    }
-
-    main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
-      text-align: center;
-      padding: 20px;
+      padding: 1rem 2rem;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin: 0 0 16px;
+      margin: 0;
+      font-size: 1.8rem;
     }
 
-    p {
-      font-size: 1.2rem;
-      margin: 0;
+    .theme-selector {
+      position: relative;
+    }
+
+    .theme-btn {
+      background: none;
+      border: 1px solid #ccc;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .theme-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      z-index: 1000;
+      min-width: 100px;
+    }
+
+    body.dark .theme-dropdown {
+      background: #1e1e1e;
+      border-color: #444;
+    }
+
+    .theme-dropdown.show {
+      display: block;
+    }
+
+    .theme-dropdown button {
+      display: block;
+      width: 100%;
+      padding: 0.6rem;
+      background: none;
+      border: none;
+      text-align: left;
+      cursor: pointer;
+      font-size: 1rem;
+      color: #000;
+    }
+
+    body.dark .theme-dropdown button {
+      color: #fff;
+    }
+
+    .theme-dropdown button:hover {
+      background-color: #f0f0f0;
+    }
+
+    body.dark .theme-dropdown button:hover {
+      background-color: #333;
     }
 
     footer {
       text-align: center;
-      padding: 16px;
+      padding: 1.5rem;
       font-size: 0.9rem;
+      color: inherit;
     }
   </style>
 </head>
-<body class="light">
+<body>
   <header>
-    <select id="themeSelector">
-      <option value="light">浅色</option>
-      <option value="dark">深色</option>
-    </select>
+    <h1>博博鱼的网站</h1>
+    <div class="theme-selector">
+      <button class="theme-btn" id="themeToggle">背景 ▼</button>
+      <div class="theme-dropdown" id="themeMenu">
+        <button onclick="setTheme('light')">浅色</button>
+        <button onclick="setTheme('dark')">深色</button>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <h1>博博鱼的网站</h1>
-    <p>此网站正在维护</p>
+  <main style="padding: 2rem;">
+    <!-- 此处可添加主页内容 -->
   </main>
 
   <footer>
@@ -85,19 +119,37 @@
   </footer>
 
   <script>
-    const body = document.body;
-    const selector = document.getElementById('themeSelector');
+    const themeToggle = document.getElementById('themeToggle');
+    const themeMenu = document.getElementById('themeMenu');
 
-    // 初始化主题（可选：从 localStorage 读取上次设置）
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    body.className = savedTheme;
-    selector.value = savedTheme;
-
-    selector.addEventListener('change', () => {
-      const theme = selector.value;
-      body.className = theme;
-      localStorage.setItem('theme', theme); // 保存用户选择
+    themeToggle.addEventListener('click', () => {
+      themeMenu.classList.toggle('show');
     });
+
+    // 点击页面其他地方关闭下拉菜单
+    document.addEventListener('click', (e) => {
+      if (!themeToggle.contains(e.target) && !themeMenu.contains(e.target)) {
+        themeMenu.classList.remove('show');
+      }
+    });
+
+    // 设置主题
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        document.body.classList.add('dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.body.classList.remove('dark');
+        localStorage.setItem('theme', 'light');
+      }
+      themeMenu.classList.remove('show');
+    }
+
+    // 页面加载时应用保存的主题
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+      document.body.classList.add('dark');
+    }
   </script>
 </body>
 </html>
